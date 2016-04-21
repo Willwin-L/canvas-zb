@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title>钟表</title>
+        <style>
+                #canvas{border: 4px solid #ccc}
+        </style>
+        <script>
+        if(!window.requestAnimationFrame){
+                window.requestAnimationFrame=(
+                        window.webkitRequestAnimationFrame||
+                        window.mozRequestAnimationFrame||
+                        window.msRequestAnimationFrame||
+                        window.oRequestAnimationFrame||
+                        function(callback){
+                                return window.setTimeout(callback,17);
+                        }
+                );
+        }
+
+
+        </script>
+</head>
+<body>
+        <canvas id="canvas" width="600" height="600"></canvas>
+
+        <script>
+                var can = document.getElementById('canvas');
+                var con = can.getContext('2d');
+                
+                
+                function drew(){
+                        con.clearRect(0,0,can.width,can.height);
+                        
+                        con.save();
+                        
+                        con.translate(can.width/2,can.height/2);
+                        
+                        con.lineWidth = 2;
+                        con.strokeStyle = '#ccc';
+                        for(var i=0;i<60;i++){
+                                con.rotate(2*Math.PI/60);
+                                con.beginPath();
+                                con.moveTo(160,0);
+                                con.lineTo(170,0);
+                                con.stroke();
+                        }
+                        
+                        con.lineWidth = 10;
+                        con.strokeStyle = 'rgba(0,0,0,0.6)';
+                        for(var i=0;i<12;i++){
+                                con.rotate(2*Math.PI/12);
+                                con.beginPath();
+                                con.moveTo(150,0);
+                                con.lineTo(180,0);
+                                con.stroke()
+                        }
+                        
+                        
+                        var d = new Date();
+                        var h = d.getHours()%12;
+                        var m = d.getMinutes();
+                        var s = d.getSeconds();
+                        
+                        //画时针
+                        con.save();
+                        con.strokeStyle = '#66f';
+                        con.lineWidth =5;
+                        con.rotate(h/12*2*Math.PI+m/60*2*Math.PI/12);
+                        con.beginPath();
+                        con.moveTo(0,8);
+                        con.lineTo(0,-90);
+                        con.stroke();
+                        con.restore()
+                        
+
+                        //画分针
+                        con.save();
+                        con.strokeStyle = '#red';
+                        con.lineWidth =5;
+                        con.rotate(m/60*2*Math.PI+s/60*2*Math.PI/60);
+                        con.beginPath();
+                        con.moveTo(0,8);
+                        con.lineTo(0,-120);
+                        con.stroke();
+                        con.restore()
+
+                        
+
+                        //画秒针
+                        con.save();
+                        con.strokeStyle = '#87f';
+                        con.lineWidth =5;
+                        con.rotate(s/60*2*Math.PI/12);
+                        con.beginPath();
+                        con.moveTo(0,8);
+                        con.lineTo(0,-130);
+                        con.stroke();
+                        con.restore()
+
+                        con.beginPath();
+                        con.arc(0,0,5,0,2*Math.PI,false);
+                        con.fillStyle = 'green';
+                        con.fill();
+                        
+                        con.restore();
+                        
+                        requestAnimationFrame(drew);
+                        
+                }
+                
+                drew()
+        </script>
+</body>
+</html>
